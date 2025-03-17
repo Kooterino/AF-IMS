@@ -90,3 +90,10 @@ button:hover {
   min-height: 300px;
   border: 1px solid #444;
 }
+
+#reader video {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  object-fit: cover;
+}
