@@ -237,31 +237,47 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ---------------
-  // Database Page: Render a table joining stock and item definitions; export as Excel
+  // Database Page: Render a table joining stock and item definitions; export as Excel; include search filtering
   // ---------------
   const inventoryTable = document.getElementById("inventory-table");
   if (inventoryTable) {
-    function renderDatabaseTable() {
+    // Modified renderDatabaseTable to optionally filter rows based on a search term.
+    function renderDatabaseTable(filterTerm = "") {
       const tbody = inventoryTable.querySelector("tbody");
       tbody.innerHTML = "";
       const stock = getStock();
       const items = getItems();
+      const lowerFilter = filterTerm.toLowerCase();
       stock.forEach(entry => {
         const item = items.find(i => i.upc === entry.upc) || { name: "Unknown", type: "", description: "", productNumber: "", upc: entry.upc };
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${item.name}</td>
-          <td>${item.type}</td>
-          <td>${item.description}</td>
-          <td>${item.productNumber}</td>
-          <td>${item.upc}</td>
-          <td>${entry.location}</td>
-          <td>${entry.quantity}</td>
-        `;
-        tbody.appendChild(row);
+        // Create a string with all searchable fields
+        const combined = `${item.name} ${item.type} ${item.description} ${item.productNumber} ${item.upc} ${entry.location} ${entry.quantity}`.toLowerCase();
+        if (!filterTerm || combined.indexOf(lowerFilter) > -1) {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.type}</td>
+            <td>${item.description}</td>
+            <td>${item.productNumber}</td>
+            <td>${item.upc}</td>
+            <td>${entry.location}</td>
+            <td>${entry.quantity}</td>
+          `;
+          tbody.appendChild(row);
+        }
       });
     }
+    // Initial render with no filter.
     renderDatabaseTable();
+
+    // Listen for changes on the search input field.
+    const searchInputDB = document.getElementById("database-search");
+    if (searchInputDB) {
+      searchInputDB.addEventListener("input", function () {
+        renderDatabaseTable(this.value);
+      });
+    }
+
     const exportBtn = document.getElementById("export-btn");
     if (exportBtn) {
       exportBtn.addEventListener("click", function () {
