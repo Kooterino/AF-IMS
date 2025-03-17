@@ -77,13 +77,36 @@ button:hover {
   background-color: #3a3a3a;
 }
 
-/* Added CSS to force the video element to display within #reader */
+/* Navigation buttons on homepage */
+.nav-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.nav-buttons button {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+  flex: 1 1 calc(50% - 10px);
+}
+
+.nav-buttons button:hover {
+  background-color: #555;
+}
+
+/* Camera preview and reader styling */
 #reader {
   width: 100%;
   min-height: 300px;
   border: 1px solid #444;
 }
 
+/* Force the video element inside #reader to display correctly */
 #reader video {
   width: 100% !important;
   height: auto !important;
