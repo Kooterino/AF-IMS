@@ -1,50 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scan - Inventory Management</title>
-  <link rel="stylesheet" href="style.css">
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Scan - American Freight Inventory Management BG</title>
+   <link rel="stylesheet" href="style.css" />
+   <!-- html5-qrcode library for scanning -->
+   <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
-<body>
-  <header class="navbar">
-    <div class="logo">
-      <h1>Inventory Management</h1>
+ <body>
+   <header class="navbar">
+     <div class="logo">
+       <h1>American Freight Inventory Management BG</h1>
     </div>
-  </header>
-  <main class="container">
-    <h2>Scan an Item</h2>
-    <button id="scan-button">Scan?</button>
-    <div id="camera-container">
-      <video id="camera-preview" autoplay></video>
+     <nav class="nav-links">
+       <a href="index.html">Home</a>
+       <a href="add_stock.html">Add Stock</a>
+       <a href="receiving.html">Receiving</a>
+       <a href="picks.html">Picks</a>
+       <a href="remove_stock.html">Remove Stock</a>
+       <a href="database.html">Database</a>
+       <a href="scan.html">Scan</a>
+     </nav>
+   </header>
+   <main class="container">
+     <h2>Scan Barcode/QR Code</h2>
+     <!-- The scan button will always be visible -->
+     <div id="scan-action">
+       <button id="request-scan">Scan?</button>
     </div>
-  </main>
-
-  <script>
-    document.getElementById("scan-button").addEventListener("click", async () => {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert("Camera access is not supported on this device.");
-        return;
-      }
-
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-        const videoElement = document.getElementById("camera-preview");
-        videoElement.srcObject = stream;
-
-        const barcodeDetector = new BarcodeDetector({ formats: ["code_128", "ean_13", "qr_code"] });
-
-        setInterval(async () => {
-          const barcodes = await barcodeDetector.detect(videoElement);
-          if (barcodes.length > 0) {
-            const upc = barcodes[0].rawValue;
-            window.location.href = `add_stock.html?upc=${upc}`;
-          }
-        }, 1000);
-      } catch (error) {
-        alert("Error accessing camera. Please grant permission.");
-      }
-    });
-  </script>
-</body>
+     <div id="scan-status"></div>
+     <!-- Camera preview container (hidden until scanning starts) -->
+     <div id="scan-container" style="display:none;">
+       <div id="reader"></div>
+       <button id="stop-scan">Stop Scan</button>
+     </div>
+     <div id="scan-result"></div>
+   </main>
+   <script src="script.js"></script>
+ </body>
 </html>
