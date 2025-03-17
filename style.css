@@ -84,3 +84,9 @@ button:hover {
     margin-top: 10px;
   }
 }
+
+#reader {
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid #444;
+}
