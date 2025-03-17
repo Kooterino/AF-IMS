@@ -60,17 +60,17 @@
     </form>
      <div id="add-message"></div>
    </main>
-   
-   <!-- Inline script to pre-fill UPC field if URL contains a 'upc' parameter -->
- 
+  
+  <!-- Inline script to pre-fill UPC field if URL contains a 'upc' parameter -->
    <script>
      window.addEventListener('DOMContentLoaded', function() {
        const params = new URLSearchParams(window.location.search);
- @@ -75,7 +50,5 @@ <h2>Add New Item</h2>
+       const upcParam = params.get('upc');
+       if (upcParam) {
+         document.getElementById('upc-number').value = upcParam;
        }
      });
    </script>
-   
    <script src="script.js"></script>
  </body>
  </html>
