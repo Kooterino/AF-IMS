@@ -1,58 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Database - Inventory Management</title>
-  <link rel="stylesheet" href="style.css">
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Database - American Freight Inventory Management BG</title>
+   <link rel="stylesheet" href="style.css" />
+   <!-- SheetJS library for Excel export -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body>
-  <header class="navbar">
-    <div class="logo">
-      <h1>Inventory Management</h1>
+ <body>
+   <header class="navbar">
+     <div class="logo">
+       <h1>American Freight Inventory Management BG</h1>
     </div>
-  </header>
-  <main class="container">
-    <h2>Database</h2>
-    <input type="text" id="search-bar" placeholder="Search by name, type, or UPC">
-    <table>
+     <nav class="nav-links">
+       <a href="index.html">Home</a>
+       <a href="add_stock.html">Add Stock</a>
+       <a href="receiving.html">Receiving</a>
+       <a href="picks.html">Picks</a>
+       <a href="remove_stock.html">Remove Stock</a>
+       <a href="database.html">Database</a>
+       <a href="scan.html">Scan</a>
+     </nav>
+   </header>
+   <main class="container">
+     <h2>Inventory Database</h2>
+     <!-- New search field -->
+     <input type="text" id="database-search" placeholder="Search database...">
+     <button id="export-btn">Export to Excel</button>
+     <table id="inventory-table" border="1" style="width:100%; margin-top:20px;">
       <thead>
-        <tr>
-          <th>Name</th>
+         <tr>
+           <th>Item Name</th>
           <th>Type</th>
-          <th>UPC</th>
-        </tr>
-      </thead>
-      <tbody id="database-list"></tbody>
+           <th>Description</th>
+           <th>Product Number</th>
+           <th>UPC</th>
+           <th>Location</th>
+           <th>Quantity</th>
+         </tr>
+       </thead>
+       <tbody>
+         <!-- Joined stock and item data will be rendered here -->
+       </tbody>
     </table>
-  </main>
-
-  <script>
-    const sampleData = [
-      { name: "Couch", type: "Furniture", upc: "123456789" },
-      { name: "Mattress", type: "Bedding", upc: "987654321" }
-    ];
-
-    function renderDatabase(data) {
-      const tableBody = document.getElementById("database-list");
-      tableBody.innerHTML = "";
-      data.forEach(item => {
-        const row = `<tr><td>${item.name}</td><td>${item.type}</td><td>${item.upc}</td></tr>`;
-        tableBody.innerHTML += row;
-      });
-    }
-
-    document.getElementById("search-bar").addEventListener("input", function() {
-      const query = this.value.toLowerCase();
-      const filteredData = sampleData.filter(item => 
-        item.name.toLowerCase().includes(query) ||
-        item.type.toLowerCase().includes(query) ||
-        item.upc.includes(query)
-      );
-      renderDatabase(filteredData);
-    });
-
-    renderDatabase(sampleData);
-  </script>
-</body>
-</html>
+   </main>
+   <script src="script.js"></script>
+ </body>
+ </html>
