@@ -1,25 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Stock - American Freight Inventory Management BG</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Stock - Inventory Management</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="navbar">
     <div class="logo">
-      <h1>American Freight Inventory Management BG</h1>
+      <h1>Inventory Management</h1>
     </div>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="add_stock.html">Add Stock</a>
-      <a href="receiving.html">Receiving</a>
-      <a href="picks.html">Picks</a>
-      <a href="remove_stock.html">Remove Stock</a>
-      <a href="database.html">Database</a>
-      <a href="scan.html">Scan</a>
-    </nav>
   </header>
   <main class="container">
     <h2>Add New Item</h2>
@@ -30,42 +21,26 @@
       <label for="item-type">Item Type:</label>
       <select id="item-type" required>
         <option value="" disabled selected>Select type</option>
-        <!-- Options sorted alphabetically -->
-        <option value="Bedframe Set">Bedframe Set</option>
-        <option value="Chest">Chest</option>
         <option value="Couch">Couch</option>
         <option value="Dresser">Dresser</option>
-        <option value="Footboard">Footboard</option>
-        <option value="Foundation/Box Spring">Foundation/Box Spring</option>
-        <option value="Headboard">Headboard</option>
-        <option value="Loveseat">Loveseat</option>
         <option value="Mattress">Mattress</option>
-        <option value="Mirror">Mirror</option>
-        <option value="Nightstand">Nightstand</option>
-        <option value="Rails">Rails</option>
         <option value="Recliner">Recliner</option>
-        <option value="Sec CN">Sec CN</option>
-        <option value="Sec LAF">Sec LAF</option>
-        <option value="Sec RAF">Sec RAF</option>
-        <option value="Sec Wedge">Sec Wedge</option>
         <option value="Table">Table</option>
       </select>
 
       <label for="item-description">Item Description:</label>
-      <textarea id="item-description" rows="3"></textarea>
+      <textarea id="item-description"></textarea>
 
-      <label for="product-number">Item/Product Number (optional):</label>
+      <label for="product-number">Item/Product Number:</label>
       <input type="text" id="product-number" />
 
       <label for="upc-number">UPC Number:</label>
       <input type="text" id="upc-number" required />
 
-      <button type="submit">Add New Item</button>
+      <button type="submit">Add Item</button>
     </form>
-    <div id="add-message"></div>
   </main>
-  
-  <!-- Inline script to pre-fill UPC field if URL contains a 'upc' parameter -->
+
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       const params = new URLSearchParams(window.location.search);
@@ -75,7 +50,5 @@
       }
     });
   </script>
-  
-  <script src="script.js"></script>
 </body>
 </html>
