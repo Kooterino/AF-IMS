@@ -1,0 +1,86 @@
+/* Dark theme styling and responsive layout */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #1f1f1f;
+  padding: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo h1 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.nav-links a {
+  color: #e0e0e0;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 1em;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  padding: 20px;
+}
+
+input, select, textarea {
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  color: #e0e0e0;
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+button {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+#suggestions {
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.suggestion {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background-color: #3a3a3a;
+}
+
+@media (max-width: 600px) {
+  .nav-links {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+}

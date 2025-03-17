@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scan - American Freight Inventory Management BG</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- html5-qrcode library for scanning -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <h1>American Freight Inventory Management BG</h1>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="add_stock.html">Add Stock</a>
+      <a href="receiving.html">Receiving</a>
+      <a href="picks.html">Picks</a>
+      <a href="remove_stock.html">Remove Stock</a>
+      <a href="database.html">Database</a>
+      <a href="scan.html">Scan</a>
+    </nav>
+  </header>
+  <main class="container">
+    <h2>Scan Barcode/QR Code</h2>
+    <div id="scan-status"></div>
+    <div id="scan-container" style="display:none;">
+      <!-- Container for the camera preview -->
+      <div id="reader" style="width:300px; margin:auto;"></div>
+      <button id="stop-scan">Stop Scan</button>
+    </div>
+    <div id="scan-action">
+      <!-- Will display a "Scan?" button or prompt for camera access -->
+    </div>
+    <div id="scan-result"></div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
