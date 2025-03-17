@@ -77,14 +77,7 @@ button:hover {
   background-color: #3a3a3a;
 }
 
-@media (max-width: 600px) {
-  .nav-links {
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
-  }
-}
-
+/* Added CSS to force the video element to display within #reader */
 #reader {
   width: 100%;
   min-height: 300px;
@@ -96,4 +89,12 @@ button:hover {
   height: auto !important;
   display: block !important;
   object-fit: cover;
+}
+
+@media (max-width: 600px) {
+  .nav-links {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
 }

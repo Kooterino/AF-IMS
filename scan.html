@@ -27,12 +27,12 @@
     <h2>Scan Barcode/QR Code</h2>
     <!-- The scan button will always be visible -->
     <div id="scan-action">
-      <!-- "Scan?" button will appear here -->
+      <button id="request-scan">Scan?</button>
     </div>
     <div id="scan-status"></div>
     <!-- Camera preview container (hidden until scanning starts) -->
     <div id="scan-container" style="display:none;">
-      <div id="reader" style="width:300px; margin:auto;"></div>
+      <div id="reader"></div>
       <button id="stop-scan">Stop Scan</button>
     </div>
     <div id="scan-result"></div>

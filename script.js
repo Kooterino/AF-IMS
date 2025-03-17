@@ -299,145 +299,138 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------------
   // Scan Page: Camera access and barcode/QR code scanning
   // ---------------
-  if (document.getElementById("reader")) {
-    // Check for mobile device (iPhone/Android)
-    const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-    const scanStatus = document.getElementById("scan-status");
-    const scanAction = document.getElementById("scan-action");
-    const scanContainer = document.getElementById("scan-container");
-    const scanResult = document.getElementById("scan-result");
-    let html5QrCode;
+if (document.getElementById("reader")) {
+  // Check for mobile device (iPhone/Android)
+  const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+  const scanStatus = document.getElementById("scan-status");
+  const scanAction = document.getElementById("scan-action");
+  const scanContainer = document.getElementById("scan-container");
+  const scanResult = document.getElementById("scan-result");
+  let html5QrCode;
 
-    if (!isMobile) {
-      scanStatus.innerText = "Error: Camera scanning is only available on iPhone/Android devices.";
-      scanAction.innerHTML = "";
-    } else {
-      // On mobile devices, show the option to request camera access.
-      scanAction.innerHTML = `<button id="request-scan">Scan?</button>`;
-      const requestScanBtn = document.getElementById("request-scan");
-      requestScanBtn.addEventListener("click", function () {
-        // Disable the scan button while scanning is active
-        requestScanBtn.disabled = true;
-        scanStatus.innerText = "Requesting camera permission...";
-        // Initialize the html5-qrcode scanner.
-        html5QrCode = new Html5Qrcode("reader");
-        const config = { fps: 10, qrbox: 250 };
-        html5QrCode.start(
-          { facingMode: "environment" },
-          config,
-          qrCodeMessage => {
-            scanStatus.innerText = "Code Scanned: " + qrCodeMessage;
-            // Stop scanning once a code is read.
-            html5QrCode.stop().then(() => {
-              processScannedCode(qrCodeMessage);
-            }).catch(err => {
-              console.error("Failed to stop scanning.", err);
-            });
-          },
-          errorMessage => {
-            // Optionally log scanning errors.
-            console.log("Scanning error:", errorMessage);
-          }
-        ).then(() => {
-          // Camera started successfully.
-          scanStatus.innerText = "Camera is active. Align code within frame.";
-          scanContainer.style.display = "block";
-          // The scan button remains visible but disabled.
-        }).catch(err => {
-          console.error("Error starting camera: ", err);
-          scanStatus.innerText = "Camera access denied or error occurred.";
+  if (!isMobile) {
+    scanStatus.innerText = "Error: Camera scanning is only available on iPhone/Android devices.";
+    scanAction.innerHTML = "";
+  } else {
+    // On mobile devices, the scan button remains visible
+    const requestScanBtn = document.getElementById("request-scan");
+    requestScanBtn.addEventListener("click", function () {
+      // Disable the scan button while scanning is active
+      requestScanBtn.disabled = true;
+      scanStatus.innerText = "Requesting camera permission...";
+      // Initialize the html5-qrcode scanner.
+      html5QrCode = new Html5Qrcode("reader");
+      const config = { fps: 10, qrbox: 250 };
+      html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        qrCodeMessage => {
+          scanStatus.innerText = "Code Scanned: " + qrCodeMessage;
+          // Stop scanning once a code is read.
+          html5QrCode.stop().then(() => {
+            processScannedCode(qrCodeMessage);
+          }).catch(err => {
+            console.error("Failed to stop scanning.", err);
+          });
+        },
+        errorMessage => {
+          // Optionally log scanning errors.
+          console.log("Scanning error:", errorMessage);
+        }
+      ).then(() => {
+        // Camera started successfully.
+        scanStatus.innerText = "Camera is active. Align code within frame.";
+        scanContainer.style.display = "block";
+      }).catch(err => {
+        console.error("Error starting camera: ", err);
+        scanStatus.innerText = "Camera access denied or error occurred.";
+        requestScanBtn.disabled = false;
+      });
+    });
+  }
+
+  // Stop scan button functionality.
+  document.getElementById("stop-scan").addEventListener("click", function () {
+    if (html5QrCode) {
+      html5QrCode.stop().then(() => {
+        scanStatus.innerText = "Scan stopped.";
+        scanContainer.style.display = "none";
+        const requestScanBtn = document.getElementById("request-scan");
+        if (requestScanBtn) {
           requestScanBtn.disabled = false;
-        });
+        }
+      }).catch(err => {
+        console.error("Error stopping scan", err);
       });
     }
+  });
 
-    // Stop scan button functionality.
-    document.getElementById("stop-scan").addEventListener("click", function () {
-      if (html5QrCode) {
-        html5QrCode.stop().then(() => {
-          scanStatus.innerText = "Scan stopped.";
-          scanContainer.style.display = "none";
-          // Re-enable the scan button.
-          const requestScanBtn = document.getElementById("request-scan");
-          if (requestScanBtn) {
-            requestScanBtn.disabled = false;
-          }
-        }).catch(err => {
-          console.error("Error stopping scan", err);
-        });
-      }
-    });
-
-    // Process the scanned code (barcode/QR code)
-    function processScannedCode(scannedCode) {
-      // Treat the scanned code as the UPC.
-      const items = getItems();
-      const item = items.find(i => i.upc === scannedCode);
-      if (item) {
-        // If item exists, prompt to add stock.
-        scanResult.innerHTML = `
-          <p>Item found: <strong>${item.name}</strong> (${item.upc})</p>
-          <p>Add stock for this item:</p>
-          <label for="scan-quantity">Quantity:</label>
-          <input type="number" id="scan-quantity" min="1" value="1">
-          <label for="scan-location">Location:</label>
-          <input type="text" id="scan-location" list="location-list-scan" required>
-          <datalist id="location-list-scan"></datalist>
-          <button id="add-scan-stock">Add Stock</button>
-        `;
-        // Generate location datalist options for the scan form.
-        const locationDatalist = document.getElementById("location-list-scan");
-        if (locationDatalist) {
-          locationDatalist.innerHTML = "";
-          const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-          for (let i = 0; i < letters.length; i++) {
-            for (let j = 1; j <= 195; j++) {
-              const num = j.toString().padStart(3, "0");
-              const option = document.createElement("option");
-              option.value = letters[i] + num;
-              locationDatalist.appendChild(option);
-            }
+  // Process the scanned code (barcode/QR code)
+  function processScannedCode(scannedCode) {
+    const items = getItems();
+    const item = items.find(i => i.upc === scannedCode);
+    if (item) {
+      // If item exists, prompt to add stock.
+      scanResult.innerHTML = `
+        <p>Item found: <strong>${item.name}</strong> (${item.upc})</p>
+        <p>Add stock for this item:</p>
+        <label for="scan-quantity">Quantity:</label>
+        <input type="number" id="scan-quantity" min="1" value="1">
+        <label for="scan-location">Location:</label>
+        <input type="text" id="scan-location" list="location-list-scan" required>
+        <datalist id="location-list-scan"></datalist>
+        <button id="add-scan-stock">Add Stock</button>
+      `;
+      // Generate location datalist options.
+      const locationDatalist = document.getElementById("location-list-scan");
+      if (locationDatalist) {
+        locationDatalist.innerHTML = "";
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (let i = 0; i < letters.length; i++) {
+          for (let j = 1; j <= 195; j++) {
+            const num = j.toString().padStart(3, "0");
+            const option = document.createElement("option");
+            option.value = letters[i] + num;
+            locationDatalist.appendChild(option);
           }
         }
-        document.getElementById("add-scan-stock").addEventListener("click", function () {
-          const location = document.getElementById("scan-location").value.trim();
-          const quantity = parseInt(document.getElementById("scan-quantity").value);
-          if (!location || isNaN(quantity)) {
-            alert("Please provide a valid location and quantity.");
-            return;
-          }
-          let stock = getStock();
-          const idx = stock.findIndex(s => s.upc === item.upc && s.location === location);
-          if (idx > -1) {
-            stock[idx].quantity += quantity;
-          } else {
-            stock.push({ upc: item.upc, location, quantity });
-          }
-          saveStock(stock);
-          scanResult.innerHTML = `<p>Stock updated for ${item.name}.</p>`;
-          // Reset scan view: hide preview and re-enable the scan button.
-          scanContainer.style.display = "none";
-          const requestScanBtn = document.getElementById("request-scan");
-          if (requestScanBtn) {
-            requestScanBtn.disabled = false;
-          }
-          scanStatus.innerText = "";
-        });
-      } else {
-        // If no item exists for the scanned UPC, prompt to add it to the database.
-        scanResult.innerHTML = `
-          <p>No item found with UPC: <strong>${scannedCode}</strong></p>
-          <p>Do you want to add this item to the database?</p>
-          <a href="add_stock.html?upc=${encodeURIComponent(scannedCode)}">Click here to add item</a>
-        `;
-        // Reset scan view: hide preview and re-enable the scan button.
+      }
+      document.getElementById("add-scan-stock").addEventListener("click", function () {
+        const location = document.getElementById("scan-location").value.trim();
+        const quantity = parseInt(document.getElementById("scan-quantity").value);
+        if (!location || isNaN(quantity)) {
+          alert("Please provide a valid location and quantity.");
+          return;
+        }
+        let stock = getStock();
+        const idx = stock.findIndex(s => s.upc === item.upc && s.location === location);
+        if (idx > -1) {
+          stock[idx].quantity += quantity;
+        } else {
+          stock.push({ upc: item.upc, location, quantity });
+        }
+        saveStock(stock);
+        scanResult.innerHTML = `<p>Stock updated for ${item.name}.</p>`;
         scanContainer.style.display = "none";
         const requestScanBtn = document.getElementById("request-scan");
         if (requestScanBtn) {
           requestScanBtn.disabled = false;
         }
         scanStatus.innerText = "";
+      });
+    } else {
+      // If no item exists, prompt to add it.
+      scanResult.innerHTML = `
+        <p>No item found with UPC: <strong>${scannedCode}</strong></p>
+        <p>Do you want to add this item to the database?</p>
+        <a href="add_stock.html?upc=${encodeURIComponent(scannedCode)}">Click here to add item</a>
+      `;
+      scanContainer.style.display = "none";
+      const requestScanBtn = document.getElementById("request-scan");
+      if (requestScanBtn) {
+        requestScanBtn.disabled = false;
       }
+      scanStatus.innerText = "";
     }
   }
-});
+}
