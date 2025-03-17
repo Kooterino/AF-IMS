@@ -25,14 +25,15 @@
   </header>
   <main class="container">
     <h2>Scan Barcode/QR Code</h2>
+    <!-- The scan button will always be visible -->
+    <div id="scan-action">
+      <!-- "Scan?" button will appear here -->
+    </div>
     <div id="scan-status"></div>
+    <!-- Camera preview container (hidden until scanning starts) -->
     <div id="scan-container" style="display:none;">
-      <!-- Container for the camera preview -->
       <div id="reader" style="width:300px; margin:auto;"></div>
       <button id="stop-scan">Stop Scan</button>
-    </div>
-    <div id="scan-action">
-      <!-- Will display a "Scan?" button or prompt for camera access -->
     </div>
     <div id="scan-result"></div>
   </main>

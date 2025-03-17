@@ -298,7 +298,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       // On mobile devices, show the option to request camera access.
       scanAction.innerHTML = `<button id="request-scan">Scan?</button>`;
-      document.getElementById("request-scan").addEventListener("click", function () {
+      const requestScanBtn = document.getElementById("request-scan");
+      requestScanBtn.addEventListener("click", function () {
+        // Disable the scan button while scanning is active
+        requestScanBtn.disabled = true;
         scanStatus.innerText = "Requesting camera permission...";
         // Initialize the html5-qrcode scanner.
         html5QrCode = new Html5Qrcode("reader");
@@ -323,11 +326,11 @@ document.addEventListener("DOMContentLoaded", function () {
           // Camera started successfully.
           scanStatus.innerText = "Camera is active. Align code within frame.";
           scanContainer.style.display = "block";
-          scanAction.style.display = "none";
+          // The scan button remains visible but disabled.
         }).catch(err => {
           console.error("Error starting camera: ", err);
           scanStatus.innerText = "Camera access denied or error occurred.";
-          scanAction.innerHTML = `<button id="request-scan">Scan?</button>`;
+          requestScanBtn.disabled = false;
         });
       });
     }
@@ -338,7 +341,11 @@ document.addEventListener("DOMContentLoaded", function () {
         html5QrCode.stop().then(() => {
           scanStatus.innerText = "Scan stopped.";
           scanContainer.style.display = "none";
-          scanAction.style.display = "block";
+          // Re-enable the scan button.
+          const requestScanBtn = document.getElementById("request-scan");
+          if (requestScanBtn) {
+            requestScanBtn.disabled = false;
+          }
         }).catch(err => {
           console.error("Error stopping scan", err);
         });
@@ -392,6 +399,13 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           saveStock(stock);
           scanResult.innerHTML = `<p>Stock updated for ${item.name}.</p>`;
+          // Reset scan view: hide preview and re-enable the scan button.
+          scanContainer.style.display = "none";
+          const requestScanBtn = document.getElementById("request-scan");
+          if (requestScanBtn) {
+            requestScanBtn.disabled = false;
+          }
+          scanStatus.innerText = "";
         });
       } else {
         // If no item exists for the scanned UPC, prompt to add it to the database.
@@ -400,6 +414,13 @@ document.addEventListener("DOMContentLoaded", function () {
           <p>Do you want to add this item to the database?</p>
           <a href="add_stock.html?upc=${encodeURIComponent(scannedCode)}">Click here to add item</a>
         `;
+        // Reset scan view: hide preview and re-enable the scan button.
+        scanContainer.style.display = "none";
+        const requestScanBtn = document.getElementById("request-scan");
+        if (requestScanBtn) {
+          requestScanBtn.disabled = false;
+        }
+        scanStatus.innerText = "";
       }
     }
   }
