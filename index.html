@@ -1,27 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - Inventory Management</title>
-  <link rel="stylesheet" href="style.css">
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>American Freight Inventory Management BG</title>
+   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <header class="navbar">
-    <div class="logo">
-      <h1>Inventory Management</h1>
+ <body>
+   <header class="navbar">
+     <div class="logo">
+       <h1>American Freight Inventory Management BG</h1>
     </div>
-  </header>
-  <main class="container">
-    <h2>Welcome to Inventory Management</h2>
+     <nav class="nav-links">
+       <a href="index.html">Home</a>
+       <a href="add_stock.html">Add Stock</a>
+       <a href="receiving.html">Receiving</a>
+       <a href="picks.html">Picks</a>
+       <a href="remove_stock.html">Remove Stock</a>
+       <a href="database.html">Database</a>
+       <a href="scan.html">Scan</a>
+     </nav>
+   </header>
+   <main class="container">
+     <h2>Welcome to the Inventory Management System</h2>
+     <p>Please choose an option below:</p>
     <div class="nav-buttons">
-      <button onclick="location.href='add_stock.html'">Add Stock</button>
-      <button onclick="location.href='receiving.html'">Receiving</button>
-      <button onclick="location.href='picks.html'">Picks</button>
-      <button onclick="location.href='remove_stock.html'">Remove Stock</button>
-      <button onclick="location.href='database.html'">Database</button>
-      <button onclick="location.href='scan.html'">Scan</button>
-    </div>
-  </main>
-</body>
-</html>
+       <button onclick="location.href='add_stock.html'">Add Stock</button>
+       <button onclick="location.href='receiving.html'">Receiving</button>
+ @@ -33,6 +23,5 @@ <h2>Welcome to the Inventory Management System</h2>
+       <button onclick="location.href='scan.html'">Scan</button>
+     </div>
+   </main>
+   <script src="script.js"></script>
+ </body>
+ </html>
